@@ -1,0 +1,15 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sb
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn import metrics
+from sklearn.svm import SVC
+from xgboost import XGBRegressor
+from sklearn.linear_model import LinearRegression, Lasso, Ridge
+from sklearn.ensemble import RandomForestRegressor
+#need to resolve the imports, currently it says they're not importing 
+
+import warnings
+warnings.filterwarnings('ignore')
