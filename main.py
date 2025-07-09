@@ -9,7 +9,9 @@ from sklearn.svm import SVC
 from xgboost import XGBRegressor
 from sklearn.linear_model import LinearRegression, Lasso, Ridge
 from sklearn.ensemble import RandomForestRegressor
-#need to resolve the imports, currently it says they're not importing 
+#use anaconda -> vs code, import scikit learn
 
 import warnings
 warnings.filterwarnings('ignore')
+
+print("hello world")
