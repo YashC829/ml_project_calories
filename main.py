@@ -14,4 +14,10 @@ from sklearn.ensemble import RandomForestRegressor
 import warnings
 warnings.filterwarnings('ignore')
 
-print("hello world")
+#get the dataset 
+df = pd.read_csv('data/full_data.csv')
+print(df.head())
+print(df.shape)
+
+
+
