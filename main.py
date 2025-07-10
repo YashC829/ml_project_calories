@@ -1,7 +1,6 @@
 '''
 next steps:
-in dataset, change male and female strings to 0 and 1 respectively for normalizing
-try one of the ml models and evaluate performance
+try to improve the XGB regressor and Random Forest performance
 '''
 
 import numpy as np
@@ -21,44 +20,48 @@ from sklearn.metrics import mean_absolute_error as mae
 import warnings
 warnings.filterwarnings('ignore')
 
-#get the dataset 
-df = pd.read_csv('data/full_data.csv')
+def main():
+    #get the dataset 
+    df = pd.read_csv('data/full_data.csv')
 
-#remove weight and duration columns (highly correlated with calories, avoid data leakage)
-to_remove = ['Weight', 'Duration']
-df.drop(to_remove, axis=1, inplace=True)
+    #remove weight and duration columns (highly correlated with calories, avoid data leakage)
+    to_remove = ['Weight', 'Duration']
+    df.drop(to_remove, axis=1, inplace=True)
 
-print(df.head())
-print("full dataset shape: ", df.shape)
+    print(df.head())
+    print("full dataset shape: ", df.shape)
 
-#training and testing split
-features = df.drop(['User_ID', 'Calories'], axis=1)
-target = df['Calories'].values
+    #training and testing split
+    features = df.drop(['User_ID', 'Calories'], axis=1)
+    target = df['Calories'].values
 
-X_train, X_val, Y_train, Y_val = train_test_split(features, target,
-                                                  test_size=0.1,
-                                                  random_state=22)
-print("training features shape: ", X_train.shape)
-print("test features shape: ", X_val.shape) 
+    X_train, X_val, Y_train, Y_val = train_test_split(features, target,
+                                                    test_size=0.1,
+                                                    random_state=22)
+    print("training features shape: ", X_train.shape)
+    print("test features shape: ", X_val.shape) 
 
-# Normalizing the features for stable and fast training.
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_val = scaler.transform(X_val)
+    # Normalizing the features for stable and fast training.
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_val = scaler.transform(X_val)
 
-#train some ml models and compare their results
-models = [LinearRegression(), XGBRegressor(),
-          Lasso(), RandomForestRegressor(), Ridge()]
+    #train some ml models and compare their results
+    models = [LinearRegression(), XGBRegressor(),
+            Lasso(), RandomForestRegressor(), Ridge()]
 
-#best models in testing: XGB Regressor and Random Forest Regressor 
-for i in range(5):
-    models[i].fit(X_train, Y_train) #train model
+    #best models in testing: XGB Regressor and Random Forest Regressor 
+    for i in range(5):
+        models[i].fit(X_train, Y_train) #train model
 
-    print(f'{models[i]}: ')
+        print(f'{models[i]}: ')
 
-    train_preds = models[i].predict(X_train) #make training predictions
-    print('Training Error: ', mae(Y_train, train_preds))
+        train_preds = models[i].predict(X_train) #make training predictions
+        print('Training Error: ', mae(Y_train, train_preds))
 
-    val_preds = models[i].predict(X_val) #make testing predictions
-    print('Validation Error: ', mae(Y_val, val_preds))
-    print()
+        val_preds = models[i].predict(X_val) #make testing predictions
+        print('Validation Error: ', mae(Y_val, val_preds))
+        print()
+
+if __name__=="__main__":
+    main()
