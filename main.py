@@ -1,6 +1,7 @@
 '''
 next steps:
 try to improve the XGB regressor and Random Forest performance
+add a ui for users to input their own info
 '''
 
 import numpy as np
@@ -24,19 +25,24 @@ def main():
     #get the dataset 
     df = pd.read_csv('data/full_data.csv')
 
-    #remove weight and duration columns (highly correlated with calories, avoid data leakage)
-    to_remove = ['Weight', 'Duration']
-    df.drop(to_remove, axis=1, inplace=True)
-
     print(df.head())
     print("full dataset shape: ", df.shape)
 
+    '''
+    # Correlate features with target. +1 for positive corr, 0 for none, -1 for negative corr
+    corr = df.corr()
+    sb.heatmap(corr[['Calories']].sort_values(by='Calories', ascending=False), annot=True)
+    plt.show()
+    #most correlated features: Effort, Duration, Temp_Stress, Weight_Duration, Heart_Rate, Body_Temp
+    '''
+     
+    
     #training and testing split
-    features = df.drop(['User_ID', 'Calories'], axis=1)
+    features = df.drop(['Calories'], axis=1)
     target = df['Calories'].values
 
     X_train, X_val, Y_train, Y_val = train_test_split(features, target,
-                                                    test_size=0.1,
+                                                    test_size=0.2,
                                                     random_state=22) #seed value
     print("training features shape: ", X_train.shape)
     print("test features shape: ", X_val.shape) 
@@ -62,6 +68,7 @@ def main():
         val_preds = models[i].predict(X_val) #make testing predictions
         print('Validation Error: ', mae(Y_val, val_preds))
         print()
+    
 
 if __name__=="__main__":
     main()
