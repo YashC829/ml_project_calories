@@ -29,9 +29,8 @@ merged_df['BMI'] = merged_df['BMI'].round(2)
 merged_df['Temp_Stress'] = merged_df['Temp_Stress'].round(2)
 
 # Removing least correlated features.
-to_remove = ['User_ID', 'Gender', 'Age', 'Height' ,'Weight', 'BMI']
+to_remove = ['User_ID']
 merged_df.drop(to_remove, axis=1, inplace=True)
-    
 
 # Print the result
 print(merged_df.head())

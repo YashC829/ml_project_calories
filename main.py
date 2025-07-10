@@ -36,7 +36,6 @@ def main():
     #most correlated features: Effort, Duration, Temp_Stress, Weight_Duration, Heart_Rate, Body_Temp
     '''
      
-    
     #training and testing split
     features = df.drop(['Calories'], axis=1)
     target = df['Calories'].values
