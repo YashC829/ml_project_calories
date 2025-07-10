@@ -15,13 +15,14 @@ from sklearn.svm import SVC
 from xgboost import XGBRegressor
 from sklearn.linear_model import LinearRegression, Lasso, Ridge
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error as mae
 #use anaconda -> vs code, import scikit learn
 
 import warnings
 warnings.filterwarnings('ignore')
 
 #get the dataset 
-df = pd.read_csv('ml_project_calories/data/full_data.csv')
+df = pd.read_csv('data/full_data.csv')
 
 #remove weight and duration columns (highly correlated with calories, avoid data leakage)
 to_remove = ['Weight', 'Duration']
@@ -44,3 +45,20 @@ print("test features shape: ", X_val.shape)
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_val = scaler.transform(X_val)
+
+#train some ml models and compare their results
+models = [LinearRegression(), XGBRegressor(),
+          Lasso(), RandomForestRegressor(), Ridge()]
+
+#best models in testing: XGB Regressor and Random Forest Regressor 
+for i in range(5):
+    models[i].fit(X_train, Y_train) #train model
+
+    print(f'{models[i]}: ')
+
+    train_preds = models[i].predict(X_train) #make training predictions
+    print('Training Error: ', mae(Y_train, train_preds))
+
+    val_preds = models[i].predict(X_val) #make testing predictions
+    print('Validation Error: ', mae(Y_val, val_preds))
+    print()
