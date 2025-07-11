@@ -57,6 +57,14 @@ def main():
     val_preds = models[1].predict(X_val) #make testing predictions
     print('Validation Error: ', mae(Y_val, val_preds))
     print()
+    
+    #SHAP analysis for most important features in XGB model
+    X_val_df = pd.DataFrame(X_val, columns=features.columns.tolist()) 
+    # Initialize the SHAP explainer
+    explainer = shap.Explainer(models[1])
+    # Calculate SHAP values for the test set
+    shap_values = explainer(X_val_df)
+    shap.plots.bar(shap_values) #Plot feature importance (mean abs shap values)
    
     #best models in testing: XGB Regressor and Random Forest Regressor 
     '''

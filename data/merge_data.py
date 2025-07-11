@@ -23,13 +23,16 @@ merged_df['BMI'] = merged_df.apply(
 merged_df['Effort'] = merged_df['Heart_Rate'] * merged_df['Duration']
 merged_df['Temp_Stress'] = merged_df['Body_Temp'] * merged_df['Heart_Rate']
 merged_df['Weight_Duration'] = merged_df['Weight'] * merged_df['Duration']
+merged_df['Stress_Effort'] = merged_df['Temp_Stress'] * merged_df['Effort']
+merged_df['Effort_Squared'] = merged_df['Effort'] ** 2
 
 # Round selected columns
 merged_df['BMI'] = merged_df['BMI'].round(2)
 merged_df['Temp_Stress'] = merged_df['Temp_Stress'].round(2)
+merged_df['Stress_Effort'] = merged_df['Stress_Effort'].round(2)
 
-# Removing least correlated features.
-to_remove = ['User_ID']
+# Removing least important features.
+to_remove = ['User_ID', 'Height', 'Duration', 'Effort_Squared', 'BMI', 'Effort']
 merged_df.drop(to_remove, axis=1, inplace=True)
 
 # Print the result
