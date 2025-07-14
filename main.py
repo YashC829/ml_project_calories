@@ -50,21 +50,24 @@ def main():
     #just XGB Regressor 
     models[1].fit(X_train, Y_train) #train model
     print(f'{models[1]}: ')
+    print("X test shape: " , X_val.shape) # (3000, 8), numpy array
 
+    # make a prediction with the user's info
+    X_user = np.zeros((1, 8))   # create an empty numpy array with dimension (1, 8)
+    print("User info: ", X_user)
+
+    # pass user info to XGB model to make predictions
+    user_pred = models[1].predict(X_user) 
+    print("Prediction for user: ", user_pred)
+
+    '''
     train_preds = models[1].predict(X_train) #make training predictions
     print('Training Error: ', mae(Y_train, train_preds)) #mean absolute error in units of calories.
 
     val_preds = models[1].predict(X_val) #make testing predictions
     print('Validation Error: ', mae(Y_val, val_preds))
     print()
-    
-    #SHAP analysis for most important features in XGB model
-    X_val_df = pd.DataFrame(X_val, columns=features.columns.tolist()) 
-    # Initialize the SHAP explainer
-    explainer = shap.Explainer(models[1])
-    # Calculate SHAP values for the test set
-    shap_values = explainer(X_val_df)
-    shap.plots.bar(shap_values) #Plot feature importance (mean abs shap values)
+    '''
    
     #best models in testing: XGB Regressor and Random Forest Regressor 
     '''
