@@ -23,6 +23,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 def main():
+    #get user info
+    user_list = get_input()
+
     #get the dataset 
     df = pd.read_csv('data/full_data.csv')
 
@@ -84,6 +87,31 @@ def main():
         print()
     '''
     
+def get_input():
+    #collect user input and put convert to the dataset features
+    user_input = []
+
+    gender = float(input("Enter a gender - 0 for male, 1 for female: "))
+    user_input.append(gender)
+
+    age = float(input("Enter an age: "))
+    user_input.append(age)
+
+    weight = float(input("Enter a weight: "))
+    user_input.append(weight)
+
+    heart_rate = float(input("Enter a heart rate: "))
+    user_input.append(heart_rate)
+
+    body_temp = float(input("Enter a body temp: "))
+    user_input.append(body_temp)
+
+    duration = float(input("Enter workout duration: "))
+    user_input.append(duration)
+
+    user_list = np.array(user_input)
+    print(user_list)
+    return user_list
 
 if __name__=="__main__":
     main()
