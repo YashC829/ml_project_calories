@@ -24,7 +24,7 @@ warnings.filterwarnings('ignore')
 
 def main():
     #get user info
-    user_list = get_input()
+    X_user = get_input()
 
     #get the dataset 
     df = pd.read_csv('data/full_data.csv')
@@ -56,7 +56,7 @@ def main():
     print("X test shape: " , X_val.shape) # (3000, 8), numpy array
 
     # make a prediction with the user's info
-    X_user = np.zeros((1, 8))   # create an empty numpy array with dimension (1, 8)
+    #X_user = np.zeros((1, 8))   # create an empty numpy array with dimension (1, 8)
     print("User info: ", X_user)
 
     # pass user info to XGB model to make predictions
@@ -88,26 +88,24 @@ def main():
     '''
     
 def get_input():
-    #collect user input and put convert to the dataset features
-    user_input = []
+    #collect user input and convert to the dataset features
+    user_input = np.zeros((1, 8))
 
     gender = float(input("Enter a gender - 0 for male, 1 for female: "))
-    user_input.append(gender)
-
     age = float(input("Enter an age: "))
-    user_input.append(age)
-
     weight = float(input("Enter a weight: "))
-    user_input.append(weight)
-
     heart_rate = float(input("Enter a heart rate: "))
-    user_input.append(heart_rate)
-
     body_temp = float(input("Enter a body temp: "))
-    user_input.append(body_temp)
-
     duration = float(input("Enter workout duration: "))
-    user_input.append(duration)
+
+    #calculate remaining features
+    temp_stress = body_temp * heart_rate
+    weight_duration = weight * duration
+    stress_effort = temp_stress * (heart_rate * duration)
+
+    #add all the features to the array
+    user_input[0] = [gender, age, weight, heart_rate, body_temp, 
+                     temp_stress, weight_duration, stress_effort]
 
     user_list = np.array(user_input)
     print(user_list)

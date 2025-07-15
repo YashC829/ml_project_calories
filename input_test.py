@@ -1,7 +1,7 @@
 #get a float from user input
 #run with terminal: python input_test.py
 
-#input we want: gender, age, weight, heart rate, body temp, duration. need the units for last 4
+#input we want: gender, age, weight, heart rate, body temp, duration. 
 
 import numpy as np
 

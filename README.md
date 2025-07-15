@@ -11,5 +11,7 @@ https://www.kaggle.com/datasets/sparkyxt/calories-burning-dataset?resource=downl
 The datasets are Calories.csv and Exercise.csv. They are referenced in the first source and were
 originally posted on Kaggle.
 
+Units for each of the features are not explicitly written in the original datasets. If anyone could point me to the correct units or another dataset that has explicit units, I'd greatly appreciate it.
+
 Model: 
 I used the XGBoost model (from xgboost library) to train and make predictions. Currently, the model has an absolute mean error of 1.22 for test data.
