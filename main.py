@@ -74,8 +74,8 @@ def make_prediction(X_user):
      #get the dataset 
     df = pd.read_csv('data/full_data.csv')
 
-    print(df.head())
-    print("full dataset shape: ", df.shape)
+    #print(df.head())
+    #print("full dataset shape: ", df.shape)
      
     #training and testing split
     features = df.drop(['Calories'], axis=1)
@@ -83,8 +83,8 @@ def make_prediction(X_user):
     X_train, X_val, Y_train, Y_val = train_test_split(features, target,
                                                     test_size=0.2,
                                                     random_state=22) #seed value
-    print("training features shape: ", X_train.shape)
-    print("test features shape: ", X_val.shape) 
+    #print("training features shape: ", X_train.shape)
+    #print("test features shape: ", X_val.shape) 
 
     # Normalizing the features for stable and fast training.
     scaler = StandardScaler()
@@ -97,12 +97,12 @@ def make_prediction(X_user):
     
     #just XGB Regressor 
     models[1].fit(X_train, Y_train) #train model
-    print(f'{models[1]}: ')
-    print("X test shape: " , X_val.shape) # (3000, 8), numpy array
+    #print(f'{models[1]}: ')
+    #print("X test shape: " , X_val.shape) # (3000, 8), numpy array
 
     # make a prediction with the user's info
     #X_user = np.zeros((1, 8))   # create an empty numpy array with dimension (1, 8)
-    print("User info: ", X_user)
+    #print("User info: ", X_user)
 
     # pass user info to XGB model to make predictions
     user_pred = models[1].predict(X_user) 
@@ -155,7 +155,7 @@ def display_window():
     def on_submit():
         result = get_input(entry_age, entry_gender, entry_weight, entry_heart, entry_temp, entry_duration)
         if result is not None:
-            print("Saved result:", result)
+            print("Saved input:", result)
             make_prediction(result) #use the xgb boost model to make prediction
 
 
