@@ -12,7 +12,7 @@ from sklearn.linear_model import LinearRegression, Lasso, Ridge
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error as mae
 
-def get_input(entry_age, entry_gender, entry_weight, entry_heart, entry_temp, entry_duration):
+def get_input(entry_age, entry_gender, entry_weight, entry_heart, entry_temp, entry_duration, result_label):
     #collect user input and convert to the dataset features
     user_input = np.zeros((1, 8))
 
@@ -26,6 +26,7 @@ def get_input(entry_age, entry_gender, entry_weight, entry_heart, entry_temp, en
     #check if field is empty
     if not age or not gender or not weight or not heart_rate or not body_temp or not duration:
         print("Please fill in all fields.")
+        result_label.config(text="Please fill in all fields.")
         return
     
     try: #convert input to floats
@@ -38,15 +39,18 @@ def get_input(entry_age, entry_gender, entry_weight, entry_heart, entry_temp, en
 
     except ValueError:
         print("Please enter valid numbers in text boxes.")
+        result_label.config(text="Please enter valid numbers in text boxes.")
         return
     
     if gender > 1 or gender < 0: # gender input is invalid
         print("Please enter valid number for gender.")
+        result_label.config(text="Please enter valid number for gender.")
         return
     
     # check if other inputs are negative
     if age < 0 or weight < 0 or heart_rate < 0 or body_temp < 0 or duration < 0:
         print("Please enter nonnegative numbers in all text boxes.")
+        result_label.config(text="Please enter nonnegative numbers in all text boxes.")
         return
 
     # only print fields if valid inputs 
@@ -107,6 +111,7 @@ def make_prediction(X_user):
     # pass user info to XGB model to make predictions
     user_pred = models[1].predict(X_user) 
     print("Calories burned for user: ", user_pred)
+    return user_pred[0]
     
 
 def display_window():
@@ -151,13 +156,22 @@ def display_window():
     entry_duration = tk.Entry(form_frame, fg="yellow", bg="red", width=10)
     entry_duration.grid(row=5, column=1, padx=10, pady=5)
 
+    # Label to display calories burned or messages
+    result_label = tk.Label(window, text="", fg="white", font=("Arial", 16))
+    result_label.pack(pady=10)
+
     # when click submit, get the input and print the resulting list if applicable.
     def on_submit():
-        result = get_input(entry_age, entry_gender, entry_weight, entry_heart, entry_temp, entry_duration)
+        result = get_input(entry_age, entry_gender, entry_weight, entry_heart, entry_temp, entry_duration, result_label)
+        #if result is None:
+            # Label to display error messages
+            #result_label.config(text="Please fill in all fields with valid data.")
         if result is not None:
             print("Saved input:", result)
-            make_prediction(result) #use the xgb boost model to make prediction
-
+            calories_burned = make_prediction(result) #use the xgb boost model to make prediction
+            print(calories_burned)
+            result_label.config(text=f"Calories Burned: {calories_burned:.2f}")
+            
 
     # Submit button
     submit = tk.Button(window, text="Submit!", width=10, height=2, fg="white", bg="black", 
