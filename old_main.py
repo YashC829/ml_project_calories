@@ -63,6 +63,14 @@ def main():
     user_pred = models[1].predict(X_user) 
     print("Prediction for user: ", user_pred)
 
+    #SHAP analysis for most important features in XGB model
+    X_val_df = pd.DataFrame(X_val, columns=features.columns.tolist()) 
+    # Initialize the SHAP explainer
+    explainer = shap.Explainer(models[1])
+    # Calculate SHAP values for the test set
+    shap_values = explainer(X_val_df)
+    shap.plots.bar(shap_values) #Plot feature importance (mean abs shap values)
+
     '''
     train_preds = models[1].predict(X_train) #make training predictions
     print('Training Error: ', mae(Y_train, train_preds)) #mean absolute error in units of calories.
@@ -126,6 +134,8 @@ plt.show()
 
 '''
 #SHAP analysis for most important features in XGB model
+#top three features: stress effort, age, weight
+
 X_val_df = pd.DataFrame(X_val, columns=features.columns.tolist()) 
 # Initialize the SHAP explainer
 explainer = shap.Explainer(models[1])
